@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="/home/alessandro/Documenti/Marseille/DC_Method/progettocorretto/mrfealogo.jpg" alt="Logo del Progetto" width="200">
-</p>
+
 
 # MRFEA Negative Ion Analysis Tool
 
