@@ -1,0 +1,62 @@
+# Configuration for Negative Ion Analysis
+# Standard Method
+# Format: KEY = VALUE
+
+# Google Drive folder URL (used to auto-download the dataset if none is found locally)
+DATA_DRIVE_URL = https://drive.google.com/drive/folders/11DwjXjeiXeNJIPMTSH12uOGSi7H4B6j8?usp=sharing
+
+# MRFEA and Plasma properties - Constants
+ION_MASS = 1875E6
+CROSS_SECTION = 4.43E-20
+DISTANCE = 0.047
+GAS_TEMPERATURE = 300
+BOLTZMANN = 1.3806E-23
+SPEED_LIGHT = 3E8
+
+# Langmuir probe results (must have the same length and order as
+# POWERS or PRESSURES below, one entry per experimental condition)
+ELECTRON_DENSITIES = [2.13E15, 1.65E15, 2.35E15, 2.70E15, 1.64E15]
+ELECTRON_TEMPERATURES = [0.57, 0.13, 0.12, 0.11, 0.15]
+
+# Experimental conditions tested (only one of the two should be non-empty)
+POWERS = []
+PRESSURES = [0.2, 1.2, 2, 4, 5]
+
+# Voltage range [V]
+VOLTAGE_START = -110
+VOLTAGE_STOP = 40
+
+# Shifting range [V]
+V_MIN = -90
+V_MAX = -70
+
+# Scaling range [V]
+SCALING_V_MIN = -90
+SCALING_V_MAX = -70
+
+# Fixed voltages [V]
+MINUS_90V = -90
+MINUS_40V = -40
+PLUS_20V = 20
+
+# Plot settings
+FIGSIZE = (10, 8)
+FONTSIZE = 14
+LINE_WIDTH = 1
+LINE_STYLE_1 = '-'
+LINE_STYLE_2 = '--'
+MARKER = '.'
+MARKER_2 = '*'
+CURRENT_SCALE = 1E9
+GRID_TRANSPARENCY = 0.7
+THRESHOLD_VOLTAGE_NEGATIVE = -5
+THRESHOLD_VOLTAGE_POSITIVE = 10
+
+# Booleans
+VERBOSE = True
+
+# Method
+METHOD = 'scaling'
+
+# Folder names to exclude from the analysis (exact names, one per list entry)
+EXCLUDED_FOLDERS = [plots, docs, html, latex]
