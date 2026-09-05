@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="/home/alessandro/Documenti/Marseille/DC_Method/progettocorretto/mrfealogo.jpg" alt="Logo del Progetto" width="200">
+</p>
+
 # MRFEA Negative Ion Analysis Tool
 
 [![Standard README compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/richardlitt/standard-readme)
@@ -16,14 +20,14 @@ Data processing and diagnostic analysis pipeline for Magnetized Retarding Field 
 
 ## State Of The Art
 
-In low-pressure hydrogen/deuterium plasmas, surface-produced negative ions are generated when positive ions or neutral species interact with a negatively biased sample surface (V_bias). These negative ions are accelerated across the plasma sheath towards the diagnostic.
+In low-pressure hydrogen/deuterium plasmas, surface-produced negative ions (NI) are generated when positive ions (PI) or neutral species interact with a negatively biased sample surface (V_bias). These negative ions are accelerated across the plasma sheath towards the diagnostic.
 
-The Magnetized Retarding Field Energy Analyzer (MRFEA) isolates surface negative ions by employing a localized rectangular magnetic barrier (B ≈ 450 G). Due to their small Larmor radius, plasma electrons are strongly magnetized and suppressed by the barrier. Conversely, surface-produced negative ions possess a significantly larger Larmor radius, traversing the magnetic barrier to reach the collector across both positive and negative collector bias regimes.
+The Magnetized Retarding Field Energy Analyzer (MRFEA) isolates NI by employing a localized rectangular magnetic barrier (B ≈ 450 G). Due to their small Larmor radius, plasma electrons are strongly magnetized and suppressed by the barrier. Conversely, surface-produced NI possess a significantly larger Larmor radius, traversing the magnetic barrier to reach the collector across both positive and negative collector bias regimes.
 
 This software pipeline processes raw MRFEA collector current characteristics by comparing biased (sample biased at -60 V) and unbiased (sample kept at ground) acquisitions:
 
 * **Shift Method:** Reconstructs the zero-negative-ion baseline by applying a constant vertical offset to the unbiased curve over a configured voltage range [V_min, V_max].
-* **Scale Method:** Reconstructs the baseline by multiplying the unbiased curve by the average ratio, calculated over the range [V_scaling_min, V_scaling_max]:
+* **Scale Method:** Reconstructs the baseline by multiplying the unbiased curve by the ratio calculated over the range [V_scaling_min, V_scaling_max]:
   $$\frac{I_{\text{biased}}}{I_{\text{unbiased}}}$$
 * **Energy Distribution Function (NIEDF):** Calculates the negative ion current derivative using Savitzky-Golay numerical filtering:
   $$\frac{dn_i}{dV}$$
@@ -277,14 +281,14 @@ The same workflow applies to a pressure scan by filling `PRESSURES` instead of `
 ### Choosing the baseline reconstruction method
 
 ```
-# Shift method: constant offset fitted over [V_MIN, V_MAX]
+# Shift method: constant offset averaged over [V_MIN, V_MAX]
 METHOD = 'shifting'
 V_MIN = -90
 V_MAX = -70
 ```
 
 ```
-# Scale method: multiplicative ratio fitted over [SCALING_V_MIN, SCALING_V_MAX]
+# Scale method: multiplicative ratio averaged over [SCALING_V_MIN, SCALING_V_MAX]
 METHOD = 'scaling'
 SCALING_V_MIN = -90
 SCALING_V_MAX = -70
@@ -295,7 +299,7 @@ SCALING_V_MAX = -70
 Any folder name listed here is skipped during dataset discovery, without being asked about interactively:
 
 ```
-EXCLUDED_FOLDERS = [plots, docs, old_run_2024]
+EXCLUDED_FOLDERS = [plots, docs]
 ```
 
 ### Fetching data automatically from Google Drive
