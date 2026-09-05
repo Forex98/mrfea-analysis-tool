@@ -46,8 +46,8 @@ This software pipeline processes raw MRFEA collector current characteristics by 
 Clone the repository:
 
 ```sh
-git clone https://github.com/Forex98/alenicosw.git
-cd alenicosw
+git clone git@github.com:Forex98/mrfea-analysis-tool.git
+cd mrfea-analysis-tool
 ```
 
 This project requires **Python 3.8+** and standard scientific libraries.
