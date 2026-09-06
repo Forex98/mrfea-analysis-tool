@@ -19,10 +19,10 @@ from numpy.typing import NDArray
 from scipy.signal import savgol_filter
 
 # Project modules
-from configreader import ConfigReader
-from dataloader import DataLoader
-from standardmethod import StandardMethod
-from style import PlotStyle
+from modules.configreader import ConfigReader
+from modules.dataloader import DataLoader
+from modules.standardmethod import StandardMethod
+from modules.style import PlotStyle
 
 
 ##
@@ -87,7 +87,7 @@ def _plot_dataset(data: dict | None, style: PlotStyle) -> None:
 
     #plt.rcParams.update({'font.size': 12})
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=style.figsize)
     ax.set_xlabel('Voltage [V]')
     ax.set_ylabel('Current [nA]')
     ax.set_title('Negative Ion Current')
@@ -97,13 +97,13 @@ def _plot_dataset(data: dict | None, style: PlotStyle) -> None:
     fig.savefig(results_path / 'ni_step.pdf', dpi=300)
     plt.close(fig)
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=style.figsize)
     ax.set_xlabel(r'E [eV]')
     ax.set_ylabel('dni/dV')
     ax.set_title('Negative Ion Dist Func')
     ax.grid(True, alpha=style.grid_transparency, ls=style.grid_linestyle)
     ax.plot(-data['voltage_nc'], data['dni/dv'], ls=style.linestyle_1, lw=style.linewidth)
-    fig.savefig(results_path / 'dist_func.pdf')
+    fig.savefig(results_path / 'dist_func.pdf', dpi=300)
     plt.close(fig)
 
 
@@ -251,7 +251,7 @@ def _compute_distribution_function(nicurr_nc_masked: NDArray) -> NDArray:
 # @param dnicurr_minus40V Uncertainty on nicurr_minus40V.
 # @return None
 def _print_collector_summary(nicurr_plus20V, dnicurr_plus20V, nicurr_minus40V, dnicurr_minus40V) -> None:
-    print('\nPrinting NI currents:')
+    print('\nPrinting NI currents [nA]:')
     print('Positive Collector:')
     print(f'- {nicurr_plus20V: .2f} +- {dnicurr_plus20V: .2f}')
     print('Negative Collector:')
@@ -334,6 +334,9 @@ def compute_dataset(directory: None | Path, config: ConfigReader, style: PlotSty
     plus_20v = config.get('PLUS_20V', 20)
     current_scale = config.get('CURRENT_SCALE', 1e9)
     method = config.get('METHOD')
+    flag_avg_ratio = config.get('PLOT_RATIO', True)
+    flag_derivative = config.get('PLOT_DERIVATIVE', True)
+    flag_method_comparison = config.get('METHOD_COMPARISON', True)
 
     loader = DataLoader(config, directory)
     unbiased_raw, biased_raw = loader.load_all_data()
@@ -341,10 +344,19 @@ def compute_dataset(directory: None | Path, config: ConfigReader, style: PlotSty
     sm = StandardMethod(loader.voltage, unbiased_raw, biased_raw, loader.results_path, style, config)
     sm.create_plot()
     plt.show(block=True)
-    sm.plot_ratio()
-    sm.derivative_unbiased()
+    if flag_avg_ratio:
+        print('\nComputing avg ratio...')
+        sm.plot_ratio()
+        print('Plot saved to .../results')
+    if flag_derivative:
+        print('\nComputing the derivative...')
+        sm.derivative_unbiased()
+        print('Plot saved to .../results')
     sm.negative_collector()
-    sm.plot_ni_comparison()
+    if flag_method_comparison:
+        print('\nPlotting NI reconstruction methods comparison...')
+        sm.plot_ni_comparison()
+        print('Plot saved to .../results')
     sm.positive_collector()
     sm.variabilities()
 
@@ -416,11 +428,15 @@ def comparison(inputlist: list, config: ConfigReader, style: PlotStyle) -> None:
     if len(inputlist) <= 1:
         return
 
+    results_folder: str = config.get('RESULTS_FOLDER', 'results')
+    comparisons_path: Path = Path('.').resolve() / results_folder / 'comparisons'
+    comparisons_path.mkdir(parents=True, exist_ok=True)
+
     _plot_dataset_series(
         inputlist=inputlist,
         plot_func=lambda ax, d: ax.scatter(d['voltage'], d['nicurr'], marker=style.marker, label=f"{d['label']}"),
         xlabel='Voltage [V]', ylabel='Current [nA]', title='NI currents comparison',
-        filename='comparison_ni_curr.pdf', style=style,
+        filename=comparisons_path / 'comparison_ni_curr.pdf', style=style,
     )
 
     def _plot_niedf(ax: plt.Axes, d: dict) -> None:
@@ -430,7 +446,7 @@ def comparison(inputlist: list, config: ConfigReader, style: PlotStyle) -> None:
     _plot_dataset_series(
         inputlist=inputlist, plot_func=_plot_niedf,
         xlabel=r'E [eV]', ylabel='dni/dV', title='NIEDF',
-        filename='comparison_energy_distribution.pdf', style=style,
+        filename=comparisons_path / 'comparison_energy_distribution.pdf', style=style,
     )
 
     x_vals, x_label, param_name, is_pressure = _determine_control_parameter(config)
@@ -442,7 +458,7 @@ def comparison(inputlist: list, config: ConfigReader, style: PlotStyle) -> None:
 
     metrics = _extract_collector_metrics(inputlist)
     _plot_collector_vs_parameter(
-        metrics, x_vals, x_label, param_name, style, 'comparison_minus_40V_plus_20V.pdf'
+        metrics, x_vals, x_label, param_name, style, comparisons_path / 'comparison_minus_40V_plus_20V.pdf'
     )
     print(f'\nComparison negative vs positive collector done ({param_name}).')
 
@@ -467,7 +483,7 @@ def comparison(inputlist: list, config: ConfigReader, style: PlotStyle) -> None:
 
         _plot_ni_vs_pi_flux(
             pi_fluxes, ni_plot_data, metrics['dni_minus40V'], style,
-            f'comparison_NI_curr_vs_pi_flux_{param_name}.pdf',
+            comparisons_path / f'comparison_NI_curr_vs_pi_flux_{param_name}.pdf',
         )
 
         print(f'Positive Ion Flux / m-2: {pi_fluxes}')

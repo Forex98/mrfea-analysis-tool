@@ -4,7 +4,7 @@
 # @brief PlotStyle defines the styling parameters shared by every plot.
 from dataclasses import dataclass
 import matplotlib.pyplot as plt
-from configreader import ConfigReader
+from modules.configreader import ConfigReader
 
 ##
 # @class PlotStyle

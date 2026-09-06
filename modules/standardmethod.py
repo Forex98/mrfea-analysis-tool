@@ -28,8 +28,8 @@ from scipy.signal import savgol_filter
 from scipy.optimize import curve_fit
 
 # Poject modules
-from configreader import ConfigReader
-from style import PlotStyle
+from modules.configreader import ConfigReader
+from modules.style import PlotStyle
 
 ##
 # @class StandardMethod
@@ -53,7 +53,7 @@ class StandardMethod:
         voltage: NDArray[np.float64],
         unbiased_currents_raw: List[NDArray[np.float64]],
         biased_currents_raw: List[NDArray[np.float64]],
-        results_path: Path,
+        directory_path: Path,
         style: PlotStyle,
         config: 'ConfigReader'
     ) -> None:
@@ -112,7 +112,7 @@ class StandardMethod:
         self.pi_std: float = 0.0
 
         # Save results
-        self.results_path = results_path
+        self.results_path: Path = directory_path
 
     ##
     # @brief Return the list of active unbiased current acquisitions.
@@ -198,7 +198,7 @@ class StandardMethod:
 
         # Add title
         pathsplitted = self.results_path.parts
-        title = pathsplitted[0]
+        title = pathsplitted[-1]
         fig.suptitle(f'{title}', fontweight='bold')
 
         fig.tight_layout()
@@ -709,7 +709,7 @@ class StandardMethod:
         ax.grid(axis='y', alpha=self.style.grid_transparency, ls=self.style.grid_linestyle)
 
         plt.tight_layout()
-        plt.savefig(filename)
+        plt.savefig(filename, dpi=300)
         plt.close(fig)
 
     ##
@@ -749,7 +749,7 @@ class StandardMethod:
         ax.grid(axis='y', alpha=self.style.grid_transparency, ls=self.style.grid_linestyle)
 
         plt.tight_layout()
-        plt.savefig(self.results_path / "comparison_slope_distribution.pdf")
+        plt.savefig(self.results_path / "comparison_slope_distribution.pdf", dpi=300)
         plt.close(fig)
 
 

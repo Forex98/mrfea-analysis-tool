@@ -8,7 +8,7 @@ from __future__ import annotations
 # in the configuration, discarding empty, incomplete, or corrupted acquisitions,
 # and builds the voltage vector shared by the rest of the analysis pipeline.
 
-from configreader import ConfigReader
+from modules.configreader import ConfigReader
 
 import numpy as np
 from pathlib import Path
@@ -51,7 +51,8 @@ class DataLoader:
         if directory is not None:
             self.base_dir: Path = directory
         else:
-            self.base_dir: Path = Path('.').resolve()
+            measurements_folder: str = self.config.get('MEASUREMENTS_FOLDER', 'measurements')
+            self.base_dir: Path = Path('.').resolve() / measurements_folder
 
         ##
         # @brief Name of the folder containing unbiased data.
@@ -81,8 +82,13 @@ class DataLoader:
         self.biased_path: Path = self.base_dir / biased_folder
 
         ##
+        # @brief Name identifying this dataset's own results subfolder, so that
+        # results from different experimental conditions never overwrite each other.
+        condition_name: str = self.subdirectory.name if self.subdirectory is not None else 'single'
+
+        ##
         # @brief Path to the results folder; created if it does not exist.
-        self.results_path: Path = self.base_dir / results_folder
+        self.results_path: Path = Path('.').resolve() / results_folder / condition_name
         self.results_path.mkdir(parents=True, exist_ok=True)
 
         ##
