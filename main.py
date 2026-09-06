@@ -43,10 +43,10 @@
 # Alessandro Forese
 
 from pathlib import Path
-from configreader import ConfigReader
-from downloader import GoogleDriveDownloader
-from functions import process_folders, comparison
-from style import PlotStyle
+from modules.configreader import ConfigReader
+from modules.downloader import GoogleDriveDownloader
+from modules.functions import process_folders, comparison
+from modules.style import PlotStyle
 
 import numpy as np
 import matplotlib
@@ -99,15 +99,18 @@ def main(config: ConfigReader) -> int:
     style = PlotStyle.from_config(config)
 
     base_path = Path('.')
-    bad_names = ['__pycache__', '.git', 'results', 'latex', 'html']
+    bad_names = ['__pycache__', '.git', 'results', 'latex', 'html', 'modules']
     excluded_folders: list = config.get('EXCLUDED_FOLDERS', [])
+    measurements_folder: str = config.get('MEASUREMENTS_FOLDER', 'measurements')
+    measurements_path = base_path / measurements_folder
 
-    ensure_data_available(config, base_path, bad_names, excluded_folders)
+
+    ensure_data_available(config, measurements_path, bad_names, excluded_folders)
 
     print('\nLoading directories...')
 
     directories = [
-        d for d in base_path.iterdir()
+        d for d in measurements_path.iterdir()
         if d.is_dir() and d.name not in bad_names and d.name not in excluded_folders
     ]
     directories.sort()
@@ -120,8 +123,8 @@ def main(config: ConfigReader) -> int:
     for directory in directories:
         print(f'{directory.name} found.')
 
-    unbiased_path = base_path / 'unbiased'
-    biased_path = base_path / 'biased'
+    unbiased_path = measurements_path / 'unbiased'
+    biased_path = measurements_path / 'biased'
 
     if unbiased_path in directories and biased_path in directories:
         print('\nUnbiased and Biased directories found in the main folder')
