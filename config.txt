@@ -54,9 +54,20 @@ THRESHOLD_VOLTAGE_POSITIVE = 10
 
 # Booleans
 VERBOSE = True
+SAVE_PLOTS = True
+PLOT_RATIO = True
+PLOT_DERIVATIVE = False
+METHOD_COMPARISON = True
+
 
 # Method
 METHOD = 'scaling'
 
 # Folder names to exclude from the analysis (exact names, one per list entry)
-EXCLUDED_FOLDERS = [plots, docs, html, latex]
+EXCLUDED_FOLDERS = [plots, docs, latex, html, images]
+
+# Name of folder measurements
+MEASUREMENTS_FOLDER = 'measurements'
+
+# Name results folder
+RESULTS_FOLDER = 'results'
