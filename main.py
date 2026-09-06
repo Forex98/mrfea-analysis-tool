@@ -79,7 +79,8 @@ def ensure_data_available(config: ConfigReader, base_path: Path, bad_names: set,
 
         print('\nNo local dataset found. Downloading data from Google Drive...')
         try:
-            downloader = GoogleDriveDownloader(output_dir=".")
+
+            downloader = GoogleDriveDownloader(output_dir=base_path)
             downloader.download_all(drive_url)
             print('Download completed successfully!')
         except Exception as e:
@@ -103,6 +104,7 @@ def main(config: ConfigReader) -> int:
     excluded_folders: list = config.get('EXCLUDED_FOLDERS', [])
     measurements_folder: str = config.get('MEASUREMENTS_FOLDER', 'measurements')
     measurements_path = base_path / measurements_folder
+    measurements_path.mkdir(parents=True, exist_ok=True)
 
 
     ensure_data_available(config, measurements_path, bad_names, excluded_folders)
