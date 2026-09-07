@@ -78,7 +78,7 @@ pip install numpy matplotlib scipy gdown
 ## Project Layout
 
 ```
-alenicosw/
+mrfea-analysis-tool/
 ├── main.py                 # entry point — run this
 ├── config.txt
 ├── Doxyfile
