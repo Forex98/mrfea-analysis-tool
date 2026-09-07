@@ -305,7 +305,7 @@ If `METHOD_COMPARISON` is `True`, the method
 sm.plot_ni_comparison()
 ```
 
-compares the negative-ion current obtained using the two available baseline reconstruction methods: shifting and scaling. This allows the user to assess how sensitive the extracted negative-ion signal is to the choice of baseline method.
+compares the negative-ion current obtained using the two available baseline reconstruction methods: shifting and scaling. 
 
 ![NI method comparison](images/ni_shift_vs_scale.png)
 
@@ -318,7 +318,7 @@ For those who want to edit the code as needed: this method must always be called
 If `unbiased/` and `biased/` are found directly inside `measurements/`, the tool offers to analyse just that one dataset:
 
 ```
-project/
+mrfea-analysis-tool/
 ├── main.py
 ├── config.txt
 └── measurements/
@@ -382,7 +382,7 @@ The negative ion energy distribution function, dn_i/dV, obtained as the voltage 
 To compare, e.g., an RF power scan, put each condition in its own folder inside `measurements/` (each containing its own `unbiased/`/`biased/`) and list the values under `POWERS` in `config.txt`:
 
 ```
-project/
+mrfea-analysis-tool/
 ├── config.txt
 └── measurements/
     ├── 200W/{unbiased,biased}/
@@ -490,13 +490,39 @@ Download completed successfully!
 
 `main.py` is the only file meant to be run directly; everything else lives in `modules/`, importable as `modules.<name>`.
 
-Every module, class, and function is documented following the [Doxygen](https://www.doxygen.nl/) convention (`## @brief` / `@param` / `@return` comment blocks). A browsable HTML reference can be generated from the included `Doxyfile`:
+
+## Install Doxygen
+
+If Doxygen is not already installed:
+
+* **Ubuntu/Debian:** `sudo apt install doxygen`
+* **Arch:** `sudo pacman -S doxygen`
+
+## Generating Documentation with Doxygen
+Every module, class, and function is documented following the [Doxygen](https://www.doxygen.nl/) convention (`## @brief` / `@param` / `@return` comment blocks).
+
+### Install Doxygen
+
+If Doxygen is not already installed:
+
+* **Ubuntu/Debian:** `sudo apt install doxygen`
+* **Arch:** `sudo pacman -S doxygen`
+
+### Build Documentation
+After cloning the repository, a browsable HTML reference can be generated from the included `Doxyfile`:
 
 ```sh
+git clone git@github.com:Forex98/mrfea-analysis-tool.git
+cd mrfea-analysis-tool
 doxygen Doxyfile
 ```
 
+### View Generated Documentation
 The output is written to `html/index.html` (not versioned; regenerate it locally whenever needed).
+
+To view the HTML documentation on Linux: 
+`xdg-open html/index.html`
+
 
 
 
