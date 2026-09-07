@@ -347,16 +347,16 @@ def compute_dataset(directory: None | Path, config: ConfigReader, style: PlotSty
     if flag_avg_ratio:
         print('\nComputing avg ratio...')
         sm.plot_ratio()
-        print('Plot saved to .../results')
+        print(f'Plot saved to {loader.results_path}')
     if flag_derivative:
         print('\nComputing the derivative...')
         sm.derivative_unbiased()
-        print('Plot saved to .../results')
+        print(f'Plot saved to {loader.results_path}')
     sm.negative_collector()
     if flag_method_comparison:
         print('\nPlotting NI reconstruction methods comparison...')
         sm.plot_ni_comparison()
-        print('Plot saved to .../results')
+        print(f'Plot saved to {loader.results_path}')
     sm.positive_collector()
     sm.variabilities()
 
