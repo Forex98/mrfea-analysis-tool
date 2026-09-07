@@ -491,13 +491,6 @@ Download completed successfully!
 `main.py` is the only file meant to be run directly; everything else lives in `modules/`, importable as `modules.<name>`.
 
 
-## Install Doxygen
-
-If Doxygen is not already installed:
-
-* **Ubuntu/Debian:** `sudo apt install doxygen`
-* **Arch:** `sudo pacman -S doxygen`
-
 ## Generating Documentation with Doxygen
 Every module, class, and function is documented following the [Doxygen](https://www.doxygen.nl/) convention (`## @brief` / `@param` / `@return` comment blocks).
 
