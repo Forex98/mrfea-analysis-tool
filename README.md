@@ -2,7 +2,7 @@
 
 [![Standard README compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/richardlitt/standard-readme)
 
-Data processing and diagnostic analysis pipeline for current-voltage (I-V) measurements performed with the Magnetized Retarding Field Energy Analyzer (MRFEA) in low-pressure deuterium plasmas.
+Data processing and diagnostic analysis pipeline for current-voltage (I-V) measurements performed with the Magnetised Retarding Field Energy Analyser (MRFEA) in low-pressure deuterium plasmas.
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@ Data processing and diagnostic analysis pipeline for current-voltage (I-V) measu
 
 In low-pressure hydrogen/deuterium plasmas, surface-produced negative ions (NI) are generated when positive ions (H+/D+) or neutrals interact with a negatively biased sample surface (V_bias), stripping one or two electrons. These NI are accelerated across the plasma sheath towards the diagnostic tool.
 
-The Magnetized Retarding Field Energy Analyzer (MRFEA) isolates NI by employing a localized rectangular magnetic barrier (B ≈ 450 G). Due to their small Larmor radius, plasma electrons are strongly magnetized and suppressed by the barrier. Conversely, NI possess a significantly larger Larmor radius, traversing the magnetic barrier to reach the collector across both positive and negative collector bias regimes. Positive ions (PI), having the same mass as NI, reach only the negative collector as they are repelled at the positive side.
+The Magnetised Retarding Field Energy Analyser (MRFEA) isolates NI by employing a localised rectangular magnetic barrier (B ≈ 450 G). Due to their small Larmor radius, plasma electrons are strongly magnetised and suppressed by the barrier. Conversely, NI possess a significantly larger Larmor radius, traversing the magnetic barrier to reach the collector across both positive and negative collector bias regimes. Positive ions (PI), having the same mass as NI, reach only the negative collector as they are repelled at the positive side.
 
 This software pipeline processes raw MRFEA collector current-voltage characteristics by comparing biased (sample biased at -60 V) and unbiased (sample kept at ground) acquisitions:
 
@@ -187,13 +187,15 @@ Python is simply signaling that `numpy.genfromtxt()` has not been able to find a
 
 ### StandardMethod methods
 
-The `StandardMethod` class provides the main analysis steps for processing and interpreting MRFEA measurements. Its methods are organized into four stages: data cleaning, physics and baseline diagnostics, negative-ion current extraction, and statistical verification. For the physical meaning behind each formula used below, see [State Of The Art](#state-of-the-art).
+The `StandardMethod` class provides the main analysis steps for processing and interpreting MRFEA measurements. Its methods are organised into four stages: data cleaning, physics and baseline diagnostics, negative-ion current extraction, and statistical verification. For the physical meaning behind each formula used below, see [State Of The Art](#state-of-the-art).
 
 The typical workflow is:
 
 ```python
-from standardmethod import StandardMethod
+from modules.dataloader import DataLoader
+from modules.standardmethod import StandardMethod
 
+loader = DataLoader(config, directory)
 sm = StandardMethod(
     loader.voltage,
     unbiased_raw,
@@ -288,7 +290,7 @@ Evaluates the collector current at a positive collector bias (nominally +20 V). 
 sm.variabilities()
 ```
 
-Evaluates the statistical variability of the measurements across the multiple acquisitions. The method characterises the dispersion distribution of the extracted negative ion currents and the stability of the reconstructed baselines. The Gaussian fits provides an indication of measurement repeatability and acquisition quality. Here are two returned plots:
+Evaluates the statistical variability of the measurements across the multiple acquisitions. The method characterises the dispersion distribution of the extracted negative ion currents and the stability of the reconstructed baselines. The Gaussian fits provide an indication of measurement repeatability and acquisition quality. Here are two returned plots:
 ![NI current dispersion, shift method](images/distribution_NI_40V_shift.png)
 
 **Fig. 6.** `distribution_NI_40V_shift.pdf` (2 Pa - 200 W)
@@ -429,7 +431,7 @@ This figure directly compares the NI current measured at the two collector volta
 
 #### NI Current vs PI Flux
 
-This plot shows the collected NI current against the PI flux at the analyzer collector: the more PI impinge on the sample surface, the more NI are produced.
+This plot shows the collected NI current against the PI flux at the analyser collector: the more PI impinge on the sample surface, the more NI are produced.
 
 ![NI current vs positive ion flux](images/comparison_NI_curr_vs_pi_flux_power.png)
 
