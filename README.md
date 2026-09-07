@@ -14,6 +14,7 @@ Data processing and diagnostic analysis pipeline for current-voltage (I-V) measu
 - [Configuration](#configuration)
 - [Examples](#examples)
 - [Modules](#modules)
+- [Documentation](#documentation)
 
 ## State Of The Art
 
